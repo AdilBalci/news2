@@ -3,6 +3,7 @@ import os
 import json
 import time
 import urllib.request
+import urllib.parse
 from datetime import datetime
 from pathlib import Path
 
@@ -28,45 +29,51 @@ def setup_directories():
             city_dir.unlink()
         city_dir.mkdir(exist_ok=True)
 
-def instagram_request(url):
+def get_user_id(username):
+    """Kullanıcı ID'sini al"""
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
         "X-IG-App-ID": "936619743392459",
-        "X-Requested-With": "XMLHttpRequest",
         "Cookie": SESSION_ID
     }
+    url = f"https://www.instagram.com/api/v1/users/web_profile_info/?username={username}"
     req = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(req, timeout=15) as response:
-        return json.loads(response.read().decode())
+        data = json.loads(response.read().decode())
+        return data["data"]["user"]["id"]
 
 def get_user_posts(username, count=6):
+    """Kullanıcının postlarını graphql ile al"""
     posts = []
     try:
-        url = f"https://www.instagram.com/api/v1/users/web_profile_info/?username={username}"
-        data = instagram_request(url)
+        # Önce user ID al
+        user_id = get_user_id(username)
+        print(f"    [+] User ID: {user_id}")
         
-        # DEBUG: Tam response yapısını göster
-        print(f"    [DEBUG] Response keys: {list(data.keys())}")
-        if "data" in data:
-            print(f"    [DEBUG] data keys: {list(data['data'].keys()) if data['data'] else 'None'}")
-            if data['data'] and 'user' in data['data']:
-                user = data['data']['user']
-                print(f"    [DEBUG] user keys: {list(user.keys())[:10]}...")
-                if 'edge_owner_to_timeline_media' in user:
-                    media = user['edge_owner_to_timeline_media']
-                    print(f"    [DEBUG] media keys: {list(media.keys())}")
-                    print(f"    [DEBUG] edge count: {len(media.get('edges', []))}")
+        # GraphQL ile postları çek
+        variables = json.dumps({
+            "id": user_id,
+            "first": count
+        })
+        url = f"https://www.instagram.com/graphql/query/?query_hash=e769aa130647d2354c40ea6a439bfc08&variables={urllib.parse.quote(variables)}"
         
-        user = data.get("data", {}).get("user")
-        if not user:
-            print(f"    [-] User yok")
-            return posts
-            
-        edges = user.get("edge_owner_to_timeline_media", {}).get("edges", [])
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+            "X-IG-App-ID": "936619743392459",
+            "X-Requested-With": "XMLHttpRequest",
+            "Cookie": SESSION_ID
+        }
+        
+        req = urllib.request.Request(url, headers=headers)
+        with urllib.request.urlopen(req, timeout=15) as response:
+            data = json.loads(response.read().decode())
+        
+        edges = data.get("data", {}).get("user", {}).get("edge_owner_to_timeline_media", {}).get("edges", [])
+        print(f"    [+] {len(edges)} post bulundu")
         
         for edge in edges[:count]:
             node = edge["node"]
-            post = {
+            posts.append({
                 "id": node["id"],
                 "shortcode": node["shortcode"],
                 "image_url": node["display_url"],
@@ -75,19 +82,16 @@ def get_user_posts(username, count=6):
                 "timestamp": datetime.fromtimestamp(node["taken_at_timestamp"]).isoformat(),
                 "is_video": node["is_video"],
                 "likes": node["edge_liked_by"]["count"]
-            }
-            posts.append(post)
+            })
             print(f"    [+] {node['shortcode']}")
+            
     except Exception as e:
         print(f"    [-] Hata: {type(e).__name__}: {e}")
     return posts
 
 def download_file(url, filepath):
     try:
-        headers = {
-            "User-Agent": "Mozilla/5.0",
-            "Cookie": SESSION_ID
-        }
+        headers = {"User-Agent": "Mozilla/5.0", "Cookie": SESSION_ID}
         req = urllib.request.Request(url, headers=headers)
         with urllib.request.urlopen(req, timeout=30) as response:
             with open(filepath, 'wb') as f:
