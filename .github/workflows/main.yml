@@ -30,6 +30,7 @@ jobs:
         run: |
           git config --local user.email "bot@turkiyeanlik.com"
           git config --local user.name "Story Bot"
+          git pull --rebase
           git add hikayeler/ stories.json
           git diff --staged --quiet || git commit -m "🔄 Hikayeler güncellendi"
           git push
