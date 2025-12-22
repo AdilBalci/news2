@@ -1,0 +1,36 @@
+name: Instagram Story Bot
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  fetch-stories:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
+        run: pip install instaloader
+        
+      - name: Run story bot
+        env:
+          INSTAGRAM_USER: ${{ secrets.INSTAGRAM_USER }}
+          INSTAGRAM_PASS: ${{ secrets.INSTAGRAM_PASS }}
+        run: python story_bot.py --once
+        
+      - name: Commit and push
+        run: |
+          git config --local user.email "bot@turkiyeanlik.com"
+          git config --local user.name "Story Bot"
+          git add hikayeler/ stories.json
+          git diff --staged --quiet || git commit -m "🔄 Hikayeler güncellendi"
+          git push
