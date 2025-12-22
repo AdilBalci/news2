@@ -1,0 +1,23 @@
+{
+  "updated": "2024-01-01T00:00:00",
+  "cities": {
+    "istanbul": {
+      "id": "TR-34",
+      "name": "İstanbul",
+      "instagram": "istanbulanlik",
+      "stories": []
+    },
+    "ankara": {
+      "id": "TR-06",
+      "name": "Ankara",
+      "instagram": "ankaraanlikcom",
+      "stories": []
+    },
+    "trabzon": {
+      "id": "TR-61",
+      "name": "Trabzon",
+      "instagram": "trabzonanliktr",
+      "stories": []
+    }
+  }
+}
