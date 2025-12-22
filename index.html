@@ -731,7 +731,7 @@
             const content = document.getElementById('story-content');
             
             if (story.type === 'video') {
-                content.innerHTML = `<img src="${story.file}" alt="Hikaye"><div class="video-badge">▶ Video</div>`;
+                content.innerHTML = `<video src="${story.file}" poster="${story.thumb}" controls autoplay muted playsinline onended="nextStory()"></video>`;
             } else {
                 content.innerHTML = `<img src="${story.file}" alt="Hikaye">`;
                 // Resimler için 5 saniye sonra otomatik geç
