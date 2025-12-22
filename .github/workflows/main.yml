@@ -21,14 +21,10 @@ jobs:
         with:
           python-version: '3.11'
           
-      - name: Install dependencies
-        run: pip install instaloader
-        
       - name: Run story bot
         env:
-          INSTAGRAM_USER: ${{ secrets.INSTAGRAM_USER }}
-          INSTAGRAM_PASS: ${{ secrets.INSTAGRAM_PASS }}
-        run: python story_bot.py --once
+          INSTAGRAM_SESSION_ID: ${{ secrets.INSTAGRAM_SESSION_ID }}
+        run: python story_bot.py
         
       - name: Commit and push
         run: |
