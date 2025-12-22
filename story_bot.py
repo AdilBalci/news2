@@ -1,19 +1,18 @@
 #!/usr/bin/env python3
 """
-Türkiye Anlık Haber - Instagram Hikaye/Post Botu
-Instaloader ile login yaparak çeker
+Türkiye Anlık Haber - Instagram Bot
+Session cookie ile çalışır - login gerektirmez
 """
 
-import instaloader
 import os
 import json
 import time
+import urllib.request
 from datetime import datetime
 from pathlib import Path
 
-# Ayarlar (GitHub Secrets'tan alınır)
-INSTAGRAM_USER = os.environ.get("INSTAGRAM_USER", "")
-INSTAGRAM_PASS = os.environ.get("INSTAGRAM_PASS", "")
+# Session cookie (GitHub Secrets'tan)
+SESSION_ID = os.environ.get("INSTAGRAM_SESSION_ID", "")
 
 # Aktif şehirler
 CITIES = {
@@ -36,30 +35,72 @@ def setup_directories():
             city_dir.unlink()
         city_dir.mkdir(exist_ok=True)
 
-def fetch_posts():
-    """Instagram'dan son postları çek"""
+def instagram_request(url):
+    """Instagram API isteği yap"""
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "X-IG-App-ID": "936619743392459",
+        "X-Requested-With": "XMLHttpRequest",
+        "Cookie": f"sessionid={SESSION_ID}"
+    }
     
-    L = instaloader.Instaloader(
-        download_video_thumbnails=False,
-        download_geotags=False,
-        download_comments=False,
-        save_metadata=False,
-        compress_json=False,
-        post_metadata_txt_pattern=""
-    )
+    req = urllib.request.Request(url, headers=headers)
+    with urllib.request.urlopen(req, timeout=15) as response:
+        return json.loads(response.read().decode())
+
+def get_user_posts(username, count=6):
+    """Kullanıcının son postlarını çek"""
+    posts = []
     
-    # Login yap
-    if INSTAGRAM_USER and INSTAGRAM_PASS:
-        print(f"[*] Instagram'a giriş yapılıyor: {INSTAGRAM_USER}")
-        try:
-            L.login(INSTAGRAM_USER, INSTAGRAM_PASS)
-            print("[+] Giriş başarılı!")
-        except Exception as e:
-            print(f"[-] Giriş hatası: {e}")
-            return
-    else:
-        print("[-] Instagram kullanıcı bilgileri eksik!")
+    try:
+        # Profil bilgisi al
+        url = f"https://www.instagram.com/api/v1/users/web_profile_info/?username={username}"
+        data = instagram_request(url)
+        
+        edges = data["data"]["user"]["edge_owner_to_timeline_media"]["edges"]
+        
+        for edge in edges[:count]:
+            node = edge["node"]
+            posts.append({
+                "id": node["id"],
+                "shortcode": node["shortcode"],
+                "image_url": node["display_url"],
+                "caption": node["edge_media_to_caption"]["edges"][0]["node"]["text"] if node["edge_media_to_caption"]["edges"] else "",
+                "timestamp": datetime.fromtimestamp(node["taken_at_timestamp"]).isoformat(),
+                "is_video": node["is_video"],
+                "likes": node["edge_liked_by"]["count"]
+            })
+            print(f"    [+] {node['shortcode']}")
+            
+    except Exception as e:
+        print(f"    [-] Hata: {e}")
+    
+    return posts
+
+def download_image(url, filepath):
+    """Resmi indir"""
+    try:
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+            "Cookie": f"sessionid={SESSION_ID}"
+        }
+        req = urllib.request.Request(url, headers=headers)
+        with urllib.request.urlopen(req, timeout=20) as response:
+            with open(filepath, 'wb') as f:
+                f.write(response.read())
+        return True
+    except Exception as e:
+        print(f"    [-] İndirme hatası: {e}")
+        return False
+
+def fetch_all():
+    """Tüm şehirlerin postlarını çek"""
+    
+    if not SESSION_ID:
+        print("[-] INSTAGRAM_SESSION_ID eksik!")
         return
+    
+    print(f"[+] Session ID mevcut: {SESSION_ID[:10]}...")
     
     manifest = {
         "updated": datetime.now().isoformat(),
@@ -70,49 +111,25 @@ def fetch_posts():
         username = city_data["instagram"]
         print(f"\n[*] {city_data['name']} (@{username}) postları çekiliyor...")
         
+        posts = get_user_posts(username, count=6)
         city_posts = []
         city_dir = STORIES_DIR / username
         
-        try:
-            profile = instaloader.Profile.from_username(L.context, username)
+        for post in posts:
+            filename = f"{post['shortcode']}.jpg"
+            filepath = city_dir / filename
             
-            # Son 5 postu çek
-            count = 0
-            for post in profile.get_posts():
-                if count >= 5:
-                    break
-                
-                filename = f"{post.shortcode}.jpg"
-                filepath = city_dir / filename
-                
-                # Resmi indir
-                try:
-                    L.download_pic(filepath.stem, post.url, post.date_utc, filename_suffix="", _attempt=1)
-                    # Dosyayı doğru yere taşı
-                    for f in Path(".").glob(f"{post.shortcode}*"):
-                        f.rename(filepath)
-                        break
-                except Exception as e:
-                    print(f"    [-] İndirme hatası: {e}")
-                    continue
-                
+            if download_image(post["image_url"], filepath):
                 city_posts.append({
                     "file": f"hikayeler/{username}/{filename}",
-                    "type": "video" if post.is_video else "image",
-                    "timestamp": post.date_utc.isoformat(),
-                    "caption": (post.caption or "")[:200],
-                    "link": f"https://www.instagram.com/p/{post.shortcode}/",
-                    "likes": post.likes
+                    "type": "video" if post["is_video"] else "image",
+                    "timestamp": post["timestamp"],
+                    "caption": post["caption"][:200] if post["caption"] else "",
+                    "link": f"https://www.instagram.com/p/{post['shortcode']}/",
+                    "likes": post["likes"]
                 })
-                
-                print(f"    [+] {post.shortcode}")
-                count += 1
-                time.sleep(2)
             
-            print(f"    Toplam: {len(city_posts)} post")
-            
-        except Exception as e:
-            print(f"    [-] Hata: {e}")
+            time.sleep(1)
         
         manifest["cities"][city_key] = {
             "id": city_data["id"],
@@ -121,7 +138,8 @@ def fetch_posts():
             "stories": city_posts
         }
         
-        time.sleep(10)
+        print(f"    Toplam: {len(city_posts)} post")
+        time.sleep(3)
     
     # Kaydet
     with open(MANIFEST_FILE, 'w', encoding='utf-8') as f:
@@ -134,4 +152,4 @@ if __name__ == "__main__":
     print(f"Post güncelleme: {datetime.now()}")
     print('='*50)
     setup_directories()
-    fetch_posts()
+    fetch_all()
