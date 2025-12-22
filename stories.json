@@ -1,170 +1,23 @@
 {
-  "updated": "2025-12-22T17:02:48.407763",
+  "updated": "2025-12-22T17:24:44.487537",
   "cities": {
     "istanbul": {
       "id": "TR-34",
       "name": "İstanbul",
       "instagram": "istanbulanlik",
-      "stories": [
-        {
-          "file": "hikayeler/istanbulanlik/DNoWSchNKTA.jpg",
-          "type": "video",
-          "timestamp": "2025-08-21T20:27:41",
-          "caption": "İstanbul’da seyir halindeki bir şoför, çakar takılı iki aracın sürekli sağa sola manevra yaparak trafikteki araçların üzerine kırdığını gördü. Aynı hareketi kendisine de yapan çakarlı araçları durdurm",
-          "link": "https://www.instagram.com/p/DNoWSchNKTA/",
-          "likes": 12071
-        },
-        {
-          "file": "hikayeler/istanbulanlik/DSjolKxjORt.jpg",
-          "type": "video",
-          "timestamp": "2025-12-22T07:07:59",
-          "caption": "❗️Sedat Peker’e hakaret eden TikTok fenomeni Metin Acar Silahlı saldırıya uğradı",
-          "link": "https://www.instagram.com/p/DSjolKxjORt/",
-          "likes": 871
-        },
-        {
-          "file": "hikayeler/istanbulanlik/DSjbn66jNHv.jpg",
-          "type": "image",
-          "timestamp": "2025-12-22T05:14:35",
-          "caption": "",
-          "link": "https://www.instagram.com/p/DSjbn66jNHv/",
-          "likes": 536
-        },
-        {
-          "file": "hikayeler/istanbulanlik/DSb7hgrjeUH.jpg",
-          "type": "video",
-          "timestamp": "2025-12-19T08:00:49",
-          "caption": "Soğuk ve yağışlı havadan kaçan bir kedi, soğuktan ölmek üzere olan yavrusunu bir evin kapısını çalarak kurtardı.\n\nYapay zeka veya değil ama vicdanlara dokunacak güzel bir video iyi seyirler...",
-          "link": "https://www.instagram.com/p/DSb7hgrjeUH/",
-          "likes": 6153
-        },
-        {
-          "file": "hikayeler/istanbulanlik/DSaOK2HjRPw.jpg",
-          "type": "video",
-          "timestamp": "2025-12-18T15:24:45",
-          "caption": "🚨 YIL SONUNDA BEKLENMEDİK KARAR AVCILAR MODALİFE’DA!\n\nYıl bitmeden büyük indirim kararı alındı!\nKoltuk takımı, masa takımı, yatak seti, kanepe ve çok daha fazlası şimdi özel fiyatlarla sizleri bekliyo",
-          "link": "https://www.instagram.com/p/DSaOK2HjRPw/",
-          "likes": 60
-        },
-        {
-          "file": "hikayeler/istanbulanlik/DSP6THgDV0z.jpg",
-          "type": "video",
-          "timestamp": "2025-12-14T15:18:14",
-          "caption": "Şişli'de, SİT alanında bulunan bir otelin çatı katında, mühürlenmesine rağmen devam eden kaçak inşaat çalışmaları mahalle sakinlerini isyana sürükledi:\n\n4 gün önce binada yangın çıktığı ve kendi imkan",
-          "link": "https://www.instagram.com/p/DSP6THgDV0z/",
-          "likes": 1200
-        }
-      ]
+      "stories": []
     },
     "ankara": {
       "id": "TR-06",
       "name": "Ankara",
       "instagram": "ankaraanlikcom",
-      "stories": [
-        {
-          "file": "hikayeler/ankaraanlikcom/DIeQESuoV9M.jpg",
-          "type": "video",
-          "timestamp": "2025-04-15T15:43:46",
-          "caption": "Başkent’in nabzı “Ankara Anlık” sayfasında atıyor!\n\nGünün sıcak gelişmelerini, son dakika haberlerini, en ilginç ve önemli olayları anlık takip ediyor, sosyal medya aracılığıyla, anında sizlere ulaştı",
-          "link": "https://www.instagram.com/p/DIeQESuoV9M/",
-          "likes": 122
-        },
-        {
-          "file": "hikayeler/ankaraanlikcom/DSaO9P1giKV.jpg",
-          "type": "video",
-          "timestamp": "2025-12-18T15:30:00",
-          "caption": "🚨 YIL SONUNDA BEKLENMEDİK KARAR BOĞAZİÇİ MODALIFE’DA!\n\nYıl bitmeden büyük indirim kararı alındı!\nKoltuk takımı, masa takımı, yatak seti, kanepe ve çok daha fazlası şimdi özel fiyatlarla sizleri bekliy",
-          "link": "https://www.instagram.com/p/DSaO9P1giKV/",
-          "likes": 182
-        },
-        {
-          "file": "hikayeler/ankaraanlikcom/DSaIj3WiDF2.jpg",
-          "type": "video",
-          "timestamp": "2025-12-18T14:36:54",
-          "caption": "Bugün Ankara’da ilk ve 25.ci şubesini açan Şırdancı Mehmet’e gidiyoruz.\nYıllardır Türkiye’de ve yurt dışında binlerce kişiyi şırdanla tanıştıran\nbu lezzet, artık Ankara’da.\nAynı ustalık,\naynı tat,\nayn",
-          "link": "https://www.instagram.com/p/DSaIj3WiDF2/",
-          "likes": 278
-        },
-        {
-          "file": "hikayeler/ankaraanlikcom/DSXmtulCA-6.jpg",
-          "type": "video",
-          "timestamp": "2025-12-17T15:00:00",
-          "caption": "Kış Sezonuna Damga Vuracak Kampanya GOLD MAGAZİN’de Başlıyor!\n\nTesettür modasında sezonun en iddialı fırsatı 19 Aralık Cuma itibariyle sizlerle buluşuyor.\n\nElbiseden takıma, günlük şıklıktan özel dave",
-          "link": "https://www.instagram.com/p/DSXmtulCA-6/",
-          "likes": 83
-        },
-        {
-          "file": "hikayeler/ankaraanlikcom/DSQCTYjjGO3.jpg",
-          "type": "video",
-          "timestamp": "2025-12-14T16:28:37",
-          "caption": "Altındağ’da bir iş yerinde, henüz belirlenemeyen bir nedenle yangın çıktı. Kısa sürede büyüyen alevler, iş yerinin yakınında bulunan bir araca da sıçradı. Yangında araç büyük hasar alarak kullanılamaz",
-          "link": "https://www.instagram.com/p/DSQCTYjjGO3/",
-          "likes": 314
-        },
-        {
-          "file": "hikayeler/ankaraanlikcom/DSP4V41jVNO.jpg",
-          "type": "video",
-          "timestamp": "2025-12-14T15:01:16",
-          "caption": "Ulaştırma ve Altyapı Bakanı Abdülkadir Uraloğlu, sosyal medya hesabından yaptığı açıklamada, Esenboğa Havalimanı metro hattı çalışmalarına önümüzdeki yıl başlanacağını duyurdu.\n\nBakan Uraloğlu, toplam",
-          "link": "https://www.instagram.com/p/DSP4V41jVNO/",
-          "likes": 590
-        }
-      ]
+      "stories": []
     },
     "trabzon": {
       "id": "TR-61",
       "name": "Trabzon",
       "instagram": "trabzonanliktr",
-      "stories": [
-        {
-          "file": "hikayeler/trabzonanliktr/DSkofFUDByN.jpg",
-          "type": "video",
-          "timestamp": "2025-12-22T16:27:07",
-          "caption": "Trabzon’da balonlu patpat naylonun ilk ve tek üretim adresi olan Doğal Plastik’teydik. \nÜretim doğrudan Trabzon’da yapıldığı için farklı illerden kargo bekleme derdi yok, maliyetler daha düşük, teslim",
-          "link": "https://www.instagram.com/p/DSkofFUDByN/",
-          "likes": 29
-        },
-        {
-          "file": "hikayeler/trabzonanliktr/DSkflUBjNRm.jpg",
-          "type": "image",
-          "timestamp": "2025-12-22T15:08:25",
-          "caption": "Trabzon Ortahisar ilçesinde bulunan Esentepe Mahallesi Arafilboyu mevkiinde yürütülecek asfalt çalışmaları nedeniyle, belirtilen güzergah 22 ve 23 Aralık 2025 tarihlerinde araç trafiğine kapatılacak.\n",
-          "link": "https://www.instagram.com/p/DSkflUBjNRm/",
-          "likes": 400
-        },
-        {
-          "file": "hikayeler/trabzonanliktr/DSkaiXxDGMw.jpg",
-          "type": "image",
-          "timestamp": "2025-12-22T14:24:20",
-          "caption": "Sarıkamış’ta donan yalnız bedenler değil, bir milletin yüreğine kazınan fedakarlıktı.\n\nVatan uğruna gözünü kırpmadan yola çıkan, soğuğa, yokluğa ve imkansızlığa rağmen geri dönmeyi düşünmeyen aziz şeh",
-          "link": "https://www.instagram.com/p/DSkaiXxDGMw/",
-          "likes": 2283
-        },
-        {
-          "file": "hikayeler/trabzonanliktr/DSkSFyKjCay.jpg",
-          "type": "image",
-          "timestamp": "2025-12-22T13:10:31",
-          "caption": "Trabzon Büyükşehir Belediyesi, Aralık ayı boyunca düzenleyeceği kapsamlı kültür ve sanat etkinlikleriyle şehre hareket katacak.\n\nTiyatrodan konsere, panelden söyleşiye kadar birçok etkinlik Hamamizade",
-          "link": "https://www.instagram.com/p/DSkSFyKjCay/",
-          "likes": 362
-        },
-        {
-          "file": "hikayeler/trabzonanliktr/DSkN7EOjEIH.jpg",
-          "type": "video",
-          "timestamp": "2025-12-22T12:35:20",
-          "caption": "Trabzon’un Ortahisar ilçesinde iki grup arasında çıkan bıç*klı kavgada 1’i ağır 8 kişi yaralandı.\n\nAlınan bilgiye göre olay, öğle saatlerinde ilçenin İskenderpaşa Mahallesi Limonlu Sokak’ta meydana ge",
-          "link": "https://www.instagram.com/p/DSkN7EOjEIH/",
-          "likes": 2067
-        },
-        {
-          "file": "hikayeler/trabzonanliktr/DSkMCPTDDSg.jpg",
-          "type": "video",
-          "timestamp": "2025-12-22T12:17:54",
-          "caption": "Trabzon’un Ortahisar ilçesi Meydan mevkiinde, köprü altında çıkan kavgada 8 kişi yaralandı. \n\nYaralılardan 4’ünün durumunun ağır olduğu öğrenilirken, olay yerindeki ilk müdahalenin ardından yaralılar ",
-          "link": "https://www.instagram.com/p/DSkMCPTDDSg/",
-          "likes": 1279
-        }
-      ]
+      "stories": []
     }
   }
 }
