@@ -1,23 +1,34 @@
 {
-  "updated": "2025-12-22T17:44:43.705093",
+  "updated": "2025-12-22T17:02:48.407763",
   "cities": {
     "istanbul": {
       "id": "TR-34",
       "name": "İstanbul",
       "instagram": "istanbulanlik",
-      "stories": []
+      "stories": [
+        {"file": "hikayeler/istanbulanlik/DSjolKxjORt.jpg", "type": "image", "timestamp": "2025-12-22T07:07:59", "caption": "Sedat Peker'e hakaret eden TikTok fenomeni", "link": "https://www.instagram.com/p/DSjolKxjORt/", "likes": 871},
+        {"file": "hikayeler/istanbulanlik/DSjbn66jNHv.jpg", "type": "image", "timestamp": "2025-12-22T05:14:35", "caption": "", "link": "https://www.instagram.com/p/DSjbn66jNHv/", "likes": 536},
+        {"file": "hikayeler/istanbulanlik/DSb7hgrjeUH.jpg", "type": "image", "timestamp": "2025-12-19T08:00:49", "caption": "Kedi yavrusunu kurtardı", "link": "https://www.instagram.com/p/DSb7hgrjeUH/", "likes": 6153}
+      ]
     },
     "ankara": {
       "id": "TR-06",
-      "name": "Ankara",
+      "name": "Ankara", 
       "instagram": "ankaraanlikcom",
-      "stories": []
+      "stories": [
+        {"file": "hikayeler/ankaraanlikcom/DSaIj3WiDF2.jpg", "type": "image", "timestamp": "2025-12-18T14:36:54", "caption": "Şırdancı Mehmet açıldı", "link": "https://www.instagram.com/p/DSaIj3WiDF2/", "likes": 278},
+        {"file": "hikayeler/ankaraanlikcom/DSQCTYjjGO3.jpg", "type": "image", "timestamp": "2025-12-14T16:28:37", "caption": "Altındağ'da yangın", "link": "https://www.instagram.com/p/DSQCTYjjGO3/", "likes": 314}
+      ]
     },
     "trabzon": {
       "id": "TR-61",
       "name": "Trabzon",
-      "instagram": "trabzonanliktr",
-      "stories": []
+      "instagram": "trabzonanliktr", 
+      "stories": [
+        {"file": "hikayeler/trabzonanliktr/DSkofFUDByN.jpg", "type": "image", "timestamp": "2025-12-22T16:27:07", "caption": "Doğal Plastik", "link": "https://www.instagram.com/p/DSkofFUDByN/", "likes": 29},
+        {"file": "hikayeler/trabzonanliktr/DSkaiXxDGMw.jpg", "type": "image", "timestamp": "2025-12-22T14:24:20", "caption": "Sarıkamış şehitleri", "link": "https://www.instagram.com/p/DSkaiXxDGMw/", "likes": 2283},
+        {"file": "hikayeler/trabzonanliktr/DSkN7EOjEIH.jpg", "type": "image", "timestamp": "2025-12-22T12:35:20", "caption": "Bıçaklı kavga", "link": "https://www.instagram.com/p/DSkN7EOjEIH/", "likes": 2067}
+      ]
     }
   }
 }
