@@ -1,9 +1,4 @@
 #!/usr/bin/env python3
-"""
-Türkiye Anlık Haber - Instagram Bot
-Video + Resim indirme destekli
-"""
-
 import os
 import json
 import time
@@ -48,16 +43,26 @@ def get_user_posts(username, count=6):
     posts = []
     try:
         url = f"https://www.instagram.com/api/v1/users/web_profile_info/?username={username}"
-        print(f"    [*] API çağrısı: {url[:50]}...")
         data = instagram_request(url)
+        
+        # DEBUG: Tam response yapısını göster
+        print(f"    [DEBUG] Response keys: {list(data.keys())}")
+        if "data" in data:
+            print(f"    [DEBUG] data keys: {list(data['data'].keys()) if data['data'] else 'None'}")
+            if data['data'] and 'user' in data['data']:
+                user = data['data']['user']
+                print(f"    [DEBUG] user keys: {list(user.keys())[:10]}...")
+                if 'edge_owner_to_timeline_media' in user:
+                    media = user['edge_owner_to_timeline_media']
+                    print(f"    [DEBUG] media keys: {list(media.keys())}")
+                    print(f"    [DEBUG] edge count: {len(media.get('edges', []))}")
         
         user = data.get("data", {}).get("user")
         if not user:
-            print(f"    [-] Kullanıcı bulunamadı: {data}")
+            print(f"    [-] User yok")
             return posts
             
         edges = user.get("edge_owner_to_timeline_media", {}).get("edges", [])
-        print(f"    [*] {len(edges)} post bulundu")
         
         for edge in edges[:count]:
             node = edge["node"]
@@ -72,10 +77,7 @@ def get_user_posts(username, count=6):
                 "likes": node["edge_liked_by"]["count"]
             }
             posts.append(post)
-            print(f"    [+] {node['shortcode']} ({'video' if node['is_video'] else 'image'})")
-    except urllib.error.HTTPError as e:
-        print(f"    [-] HTTP Hata: {e.code} - {e.reason}")
-        print(f"    [-] Response: {e.read().decode()[:500]}")
+            print(f"    [+] {node['shortcode']}")
     except Exception as e:
         print(f"    [-] Hata: {type(e).__name__}: {e}")
     return posts
@@ -83,7 +85,7 @@ def get_user_posts(username, count=6):
 def download_file(url, filepath):
     try:
         headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+            "User-Agent": "Mozilla/5.0",
             "Cookie": SESSION_ID
         }
         req = urllib.request.Request(url, headers=headers)
@@ -100,17 +102,13 @@ def fetch_all():
         print("[-] INSTAGRAM_SESSION_ID eksik!")
         return
     
-    print(f"[+] Session ID uzunluk: {len(SESSION_ID)}")
-    print(f"[+] Session başlangıç: {SESSION_ID[:50]}...")
+    print(f"[+] Session OK")
     
-    manifest = {
-        "updated": datetime.now().isoformat(),
-        "cities": {}
-    }
+    manifest = {"updated": datetime.now().isoformat(), "cities": {}}
     
     for city_key, city_data in CITIES.items():
         username = city_data["instagram"]
-        print(f"\n[*] {city_data['name']} (@{username}) postları çekiliyor...")
+        print(f"\n[*] {city_data['name']} (@{username})")
         
         posts = get_user_posts(username, count=6)
         city_posts = []
@@ -119,17 +117,12 @@ def fetch_all():
         for post in posts:
             if post["is_video"] and post["video_url"]:
                 filename = f"{post['shortcode']}.mp4"
-                filepath = city_dir / filename
                 thumb_filename = f"{post['shortcode']}_thumb.jpg"
-                thumb_filepath = city_dir / thumb_filename
-                
-                video_ok = download_file(post["video_url"], filepath)
-                thumb_ok = download_file(post["image_url"], thumb_filepath)
-                
-                if video_ok:
+                if download_file(post["video_url"], city_dir / filename):
+                    download_file(post["image_url"], city_dir / thumb_filename)
                     city_posts.append({
                         "file": f"hikayeler/{username}/{filename}",
-                        "thumb": f"hikayeler/{username}/{thumb_filename}" if thumb_ok else None,
+                        "thumb": f"hikayeler/{username}/{thumb_filename}",
                         "type": "video",
                         "timestamp": post["timestamp"],
                         "caption": post["caption"][:200] if post["caption"] else "",
@@ -138,9 +131,7 @@ def fetch_all():
                     })
             else:
                 filename = f"{post['shortcode']}.jpg"
-                filepath = city_dir / filename
-                
-                if download_file(post["image_url"], filepath):
+                if download_file(post["image_url"], city_dir / filename):
                     city_posts.append({
                         "file": f"hikayeler/{username}/{filename}",
                         "thumb": None,
@@ -150,7 +141,6 @@ def fetch_all():
                         "link": f"https://www.instagram.com/p/{post['shortcode']}/",
                         "likes": post["likes"]
                     })
-            
             time.sleep(1)
         
         manifest["cities"][city_key] = {
@@ -159,14 +149,12 @@ def fetch_all():
             "instagram": username,
             "stories": city_posts
         }
-        
-        print(f"    Toplam: {len(city_posts)} post")
+        print(f"    Toplam: {len(city_posts)}")
         time.sleep(3)
     
     with open(MANIFEST_FILE, 'w', encoding='utf-8') as f:
         json.dump(manifest, f, ensure_ascii=False, indent=2)
-    
-    print(f"\n[+] Kaydedildi: {MANIFEST_FILE}")
+    print(f"\n[+] Kaydedildi")
 
 if __name__ == "__main__":
     print(f"{'='*50}")
