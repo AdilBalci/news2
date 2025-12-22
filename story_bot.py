@@ -48,8 +48,16 @@ def get_user_posts(username, count=6):
     posts = []
     try:
         url = f"https://www.instagram.com/api/v1/users/web_profile_info/?username={username}"
+        print(f"    [*] API çağrısı: {url[:50]}...")
         data = instagram_request(url)
-        edges = data["data"]["user"]["edge_owner_to_timeline_media"]["edges"]
+        
+        user = data.get("data", {}).get("user")
+        if not user:
+            print(f"    [-] Kullanıcı bulunamadı: {data}")
+            return posts
+            
+        edges = user.get("edge_owner_to_timeline_media", {}).get("edges", [])
+        print(f"    [*] {len(edges)} post bulundu")
         
         for edge in edges[:count]:
             node = edge["node"]
@@ -57,7 +65,7 @@ def get_user_posts(username, count=6):
                 "id": node["id"],
                 "shortcode": node["shortcode"],
                 "image_url": node["display_url"],
-                "video_url": node.get("video_url"),  # Video URL'i al
+                "video_url": node.get("video_url"),
                 "caption": node["edge_media_to_caption"]["edges"][0]["node"]["text"] if node["edge_media_to_caption"]["edges"] else "",
                 "timestamp": datetime.fromtimestamp(node["taken_at_timestamp"]).isoformat(),
                 "is_video": node["is_video"],
@@ -65,8 +73,11 @@ def get_user_posts(username, count=6):
             }
             posts.append(post)
             print(f"    [+] {node['shortcode']} ({'video' if node['is_video'] else 'image'})")
+    except urllib.error.HTTPError as e:
+        print(f"    [-] HTTP Hata: {e.code} - {e.reason}")
+        print(f"    [-] Response: {e.read().decode()[:500]}")
     except Exception as e:
-        print(f"    [-] Hata: {e}")
+        print(f"    [-] Hata: {type(e).__name__}: {e}")
     return posts
 
 def download_file(url, filepath):
@@ -89,7 +100,8 @@ def fetch_all():
         print("[-] INSTAGRAM_SESSION_ID eksik!")
         return
     
-    print(f"[+] Session ID mevcut")
+    print(f"[+] Session ID uzunluk: {len(SESSION_ID)}")
+    print(f"[+] Session başlangıç: {SESSION_ID[:50]}...")
     
     manifest = {
         "updated": datetime.now().isoformat(),
@@ -106,7 +118,6 @@ def fetch_all():
         
         for post in posts:
             if post["is_video"] and post["video_url"]:
-                # Video indir
                 filename = f"{post['shortcode']}.mp4"
                 filepath = city_dir / filename
                 thumb_filename = f"{post['shortcode']}_thumb.jpg"
@@ -126,7 +137,6 @@ def fetch_all():
                         "likes": post["likes"]
                     })
             else:
-                # Resim indir
                 filename = f"{post['shortcode']}.jpg"
                 filepath = city_dir / filename
                 
